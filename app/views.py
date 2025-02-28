@@ -19,7 +19,6 @@ def home(request):
             pic = user.profilePic
             email = user.email
     posts = userPost.objects.all()
-    print(posts)
     context = {
         'username':usernameofuser,
         'name':fullname,
@@ -28,6 +27,8 @@ def home(request):
         'posts':posts,
     }
     return render(request, 'home.html', context)
+
+
 def profile(request):
     fullname = None
     pic = None
@@ -41,13 +42,20 @@ def profile(request):
             fullname = user.fname.capitalize() + " " + user.lname.capitalize()
             pic = user.profilePic
             email = user.email
+    posts = userPost.objects.filter(theUser = usernameofuser)
+
+
     context = {
         'username':usernameofuser,
         'name':fullname,
         'pic':pic,
         'email': email,
+        'posts': posts,
     }
     return render(request, 'profile.html', context)
+
+
+
 def log_in(request):
     if request.method == "POST":
         username = request.POST.get('username')

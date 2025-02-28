@@ -1,102 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    <link rel="stylesheet" href="{%static 'css/profile.css'%}">
 
-        .profile-container {
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            width: 350px;
-        }
-
-        .profile-pic {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border: 3px solid #4CAF50;
-        }
-
-        .username {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .fullname {
-            font-size: 16px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .bio {
-            font-size: 14px;
-            color: #555;
-            margin: 10px 0;
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .edit-btn {
-            background-color: #4CAF50;
-            color: #fff;
-        }
-
-        .edit-btn:hover {
-            background-color: #45a049;
-        }
-
-        .logout-btn {
-            background-color: #d9534f;
-            color: #fff;
-        }
-
-        .logout-btn:hover {
-            background-color: #c9302c;
-        }
-    </style>
 </head>
 <body>
-
     <div class="profile-container">
-        <img src="{{pic.url}}" alt="Profile Picture" class="profile-pic">
-        <div class="username">@{{username}}</div>
-        <div class="fullname">{{name}}</div>
-        <div class="fullname">{{email}}</div>
+        {% if pic %}
+            <img src="{{ pic.url }}" alt="Profile Picture" class="profile-pic">
+        {% else %}
+            <img src="{% static 'default_profile.jpg' %}" alt="Profile Picture" class="profile-pic">
+        {% endif %}
+        <div class="username">@{{ username }}</div>
+        <div class="fullname">{{ name }}</div>
+        <div class="fullname">{{ email }}</div>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn logout-btn">Logout</button>
         </form>
-        
     </div>
 
+    <div class="posts-container">
+        {% for post in posts %}
+            <div class="post-container">
+                <span>@{{ post.theUser }}</span>
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.description }}</p>
+            </div>
+        {% empty %}
+            <p>No posts available.</p>
+        {% endfor %}
+    </div>
 </body>
 </html>

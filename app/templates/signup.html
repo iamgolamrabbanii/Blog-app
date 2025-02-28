@@ -1,128 +1,12 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'css/signup.css'%}">
     <title>Signup</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 50px;
-        }
-
-        form {
-            background-color: #fff;
-            padding: 30px;
-            max-width: 400px;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        textarea,
-        input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus,
-        input[type="file"]:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        #usernameStatus {
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        #usernameStatus span {
-            font-weight: bold;
-        }
-
-        nav {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        nav a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-
-    </style>
 </head>
-
-<script>
-    function checkUsername() {
-        var username = document.getElementById("usernameInput").value;
-        if (username.length === 0) {
-            document.getElementById("usernameStatus").innerHTML = "";
-            return;
-        }
-
-        fetch(`/check-username/?username=${username}`)
-        .then(response => response.json())
-        .then(data => {
-            let statusElement = document.getElementById("usernameStatus");
-            if (data.available) {
-                statusElement.innerHTML = "<span style='color:green;'>✔ Username is available!</span>";
-            } else {
-                statusElement.innerHTML = "<span style='color:red;'>✖ Username is already taken!</span>";
-            }
-        });
-    }
-</script>
-
 <body>
     <div class="container">
         <div>
@@ -131,39 +15,40 @@
                 {%csrf_token%}
                 <label for="">First Name</label>
                 <input type="text" name="fname" required><br>
-
+                
                 <label for="">Last Name</label>
                 <input type="text" name="lname" required><br>
-
+                
                 <label for="">Username</label>
                 <input type="text" id="usernameInput" name="username" onkeyup="checkUsername()" required> 
                 <span id="usernameStatus"></span>  <!-- This will show availability status -->
                 <br>
-
+                
                 <label for="">Email</label>
-                <input type="text" name="email" required><br>
-
+                <input type="email" name="email" required><br>
+                
                 <label for="">Password</label>
-                <input type="text" name="pass1" required><br>
-
+                <input type="password" name="pass1" required><br>
+                
                 <label for="">Confirm Password</label>
-                <input type="text" name="pass2" required><br>
+                <input type="password" name="pass2" required><br>
                 
                 <label for="">Profile pic</label>
                 <input type="file" name="profilepic"><br>
-
+                
                 <button type="submit">Signup</button><br>
             </form>
-
+            
             <div>
                 <nav>If you have an account, <a href="{%url 'login'%}">Login</a></nav>
             </div>
-
+            
             {%if messages%}
             {%for m in messages%}
-                {{m}}
+            {{m}}
             {%endfor%}
             {%endif%}
+            <script src="{%static 'js/signup.js'%}"></script>
         </div>
     </div>
 </body>
