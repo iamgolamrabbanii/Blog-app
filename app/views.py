@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+from django.core.paginator import Paginator
 
-# Create your views here.
 def home(request):
     fullname = None
     pic = None
@@ -19,12 +19,20 @@ def home(request):
             pic = user.profilePic
             email = user.email
     posts = userPost.objects.all()
+
+    # adding paginator , 3 object will be show in one page
+    paginator = Paginator(posts, 3)  
+    page_number = request.GET.get("page") 
+    page_obj = paginator.get_page(page_number)
+
+
     context = {
         'username':usernameofuser,
         'name':fullname,
         'pic':pic,
         'email': email,
         'posts':posts,
+        'page_obj':page_obj,
     }
     return render(request, 'home.html', context)
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{%static 'css/home.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <title>Home</title>
 </head>
 <body>
@@ -33,7 +33,7 @@
 
     <!-- Space for user posts -->
     <div class="posts-container">
-        {% for post in posts %}
+        {% for post in page_obj %}
             <div class="post-container">
                 <a href="{%url 'profile'%}"><span>@{{ post.theUser }}</span></a>
                 <h2>{{ post.title }}</h2>
@@ -49,6 +49,17 @@
             {% endfor %}
         </div>
     {% endif %}
-    
+
+
+    <div class="paginator">
+        {% if page_obj.has_previous %}
+        <a href="?page={{page_obj.previous_page_number}}">Previous</a>
+        {% endif %}
+        <a href="">{{page_obj.number}}</a>
+        {% if page_obj.has_next %}
+        <a href="?page={{page_obj.next_page_number}}">Next</a>
+        {% endif %}
+    </div>
+
 </body>
 </html>
